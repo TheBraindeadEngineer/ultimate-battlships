@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="1.0.0-beta1" use-changelog="false" last-position="0,0" last-zoom="1" max-obj-count="4"
+	 default-schema="public" default-owner="postgres"
+	 layers="Default layer"
+	 active-layers="0"
+	 layer-name-colors="#000000"
+	 layer-rect-colors="#b4b4b4"
+	 show-layer-names="false" show-layer-rects="false">
+<database name="ultimate-battleships" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layers="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="users" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="60" y="60"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="username" not-null="true">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="password" not-null="true">
+		<type name="varchar" length="300"/>
+	</column>
+	<constraint name="user_id" type="pk-constr" table="public.users">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="games" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="540" y="40"/>
+	<column name="game_id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="board" not-null="true">
+		<type name="integer" length="0" dimension="2"/>
+	</column>
+	<column name="player_a" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="player_b" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="game_id" type="pk-constr" table="public.games">
+		<columns names="game_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="looking_for_game" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="460" y="420"/>
+	<column name="looking_for_game_id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="looking_for_game_id" type="pk-constr" table="public.looking_for_game">
+		<columns names="looking_for_game_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="player_a_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="public.users" table="public.games">
+	<columns names="player_a" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="player_b_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="public.users" table="public.games">
+	<columns names="player_b" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="player_id" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="public.users" table="public.looking_for_game">
+	<columns names="id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_games_users" type="relfk" layers="0"
+	 src-table="public.games"
+	 dst-table="public.users" reference-fk="player_a_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_games_users1" type="relfk" layers="0"
+	 src-table="public.games"
+	 dst-table="public.users" reference-fk="player_b_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_looking_for_game_users" type="relfk" layers="0"
+	 src-table="public.looking_for_game"
+	 dst-table="public.users" reference-fk="player_id"
+	 src-required="false" dst-required="true"/>
+
+</dbmodel>
